@@ -31,30 +31,32 @@ npm run report:merge && npm run report:generate
 - Para sobrescrever: `CYPRESS_BASE_URL=https://minha.api.com npm test`
 
 ## Cobertura de Cenários
-- Login JWT (sucesso) e login inválido (401)
-- Listagem de usuários
+- Login com JWT (sucesso) e login inválido (401)
+- Retornar listagem de usuários
 - CRUD completo de usuários autenticado: criar, obter por id, atualizar e deletar
-- Negativo: tentativa de criar com email duplicado
-- Resiliência contra `429 Too Many Requests` com retry exponencial simples (comando `cy.apiRequest`)
+- Negativo: tentativa de criar usuário com email duplicado
+- Resiliência contra `429 Too Many Requests` com retry simples (comando `cy.apiRequest`)
 
 ## Estrutura
 ```
 .github/
   workflows/
-    ci.yml              # Executa testes e publica relatório como artefato
+    ci.yml              # Executa testes e publica relatório como artefato; permite execução manual
 cypress/
   e2e/
-    users.cy.js         # Testes ServeRest (auth + CRUD usuários)
+    usuarios.cy.js      # Testes ServeRest (auth + CRUD usuários)
   support/
-    e2e.js              # Comandos customizados (retry 429)
+    e2e.js              # Comandos customizados (retry 429 e login)
 cypress.config.js       # Config do Cypress (baseUrl, reporter)
 package.json            # Scripts e dependências
 README.md               # Este guia
 .gitignore
 ```
 
-## CI
-- GitHub Actions: job executa `npm test` e envia `cypress/reports` como artefato.
+## CI (GitHub Actions)
+- Dispara automaticamente em `push`/`pull_request` para `main`/`master`.
+- Execução manual: aba “Actions” → workflow “CI” → botão “Run workflow”.
+- Artefatos: relatório Mochawesome em `cypress/reports` (JSON/HTML).
 
 ## Notas
 - Credenciais padrão usadas para login: `fulano@qa.com` / `teste` (públicas do ServeRest)
