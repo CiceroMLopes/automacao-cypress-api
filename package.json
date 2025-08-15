@@ -8,7 +8,7 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --reporter mochawesome",
     "report:merge": "mochawesome-merge cypress/reports/mochawesome*.json -o cypress/reports/report.json",
-    "report:generate": "marge cypress/reports/report.json -f report -o cypress/reports",
+    "report:generate": "marge cypress/reports/report.json -f report -o cypress/reports --inline",
     "test": "npm run cypress:run && npm run report:merge && npm run report:generate"
   },
   "devDependencies": {
