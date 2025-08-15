@@ -1,0 +1,240 @@
+{
+  "stats": {
+    "suites": 2,
+    "tests": 7,
+    "passes": 7,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-08-15T02:03:47.055Z",
+    "end": "2025-08-15T02:03:49.057Z",
+    "duration": 2002,
+    "testsRegistered": 7,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "a7dd84ae-6490-4b89-9bb2-2b735ca0a53a",
+      "title": "",
+      "fullFile": "cypress\\e2e\\users.cy.js",
+      "file": "cypress\\e2e\\users.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "908d3795-cb08-4921-a173-d048ad3939d1",
+          "title": "ServeRest - Autenticação e CRUD de Usuários",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "deve falhar login com credenciais inválidas (401)",
+              "fullTitle": "ServeRest - Autenticação e CRUD de Usuários deve falhar login com credenciais inválidas (401)",
+              "timedOut": null,
+              "duration": 627,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.apiRequest({\n  method: 'POST',\n  url: '/login',\n  body: {\n    email: 'invalido@mail.com',\n    password: 'errada'\n  }\n}).then(response => {\n  expect(response.status).to.eq(401);\n});",
+              "err": {},
+              "uuid": "5d5e25a6-819d-4aee-a73d-cef9a7be2cd1",
+              "parentUUID": "908d3795-cb08-4921-a173-d048ad3939d1",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "deve listar usuários (GET /usuarios)",
+              "fullTitle": "ServeRest - Autenticação e CRUD de Usuários deve listar usuários (GET /usuarios)",
+              "timedOut": null,
+              "duration": 220,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.apiRequest({\n  method: 'GET',\n  url: '/usuarios'\n}).then(response => {\n  expect(response.status).to.eq(200);\n  expect(response.body).to.have.property('quantidade');\n  expect(response.body).to.have.property('usuarios').that.is.an('array');\n});",
+              "err": {},
+              "uuid": "bd935a6c-0b05-4f03-be39-68a0d65e2b18",
+              "parentUUID": "908d3795-cb08-4921-a173-d048ad3939d1",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [
+            {
+              "uuid": "ab49b9e4-9070-4f38-805a-6270096dd28d",
+              "title": "CRUD de usuários autenticado",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "deve criar usuário (POST /usuarios)",
+                  "fullTitle": "ServeRest - Autenticação e CRUD de Usuários CRUD de usuários autenticado deve criar usuário (POST /usuarios)",
+                  "timedOut": null,
+                  "duration": 211,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "createdEmail = uniqueEmail();\nconst token = Cypress.env('token');\nexpect(token, 'token carregado').to.be.a('string').and.to.have.length.greaterThan(0);\ncy.apiRequest({\n  method: 'POST',\n  url: '/usuarios',\n  headers: {\n    authorization: token\n  },\n  body: {\n    nome: 'Usuário Teste',\n    email: createdEmail,\n    password: '123456',\n    administrador: 'true'\n  }\n}).then(response => {\n  expect(response.status).to.be.oneOf([201, 200]);\n  expect(response.body).to.have.property('_id');\n  createdUserId = response.body._id;\n});",
+                  "err": {},
+                  "uuid": "e4a809af-b25d-4c74-aadb-596c4dcd6895",
+                  "parentUUID": "ab49b9e4-9070-4f38-805a-6270096dd28d",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "deve obter usuário por id (GET /usuarios/{id})",
+                  "fullTitle": "ServeRest - Autenticação e CRUD de Usuários CRUD de usuários autenticado deve obter usuário por id (GET /usuarios/{id})",
+                  "timedOut": null,
+                  "duration": 203,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "expect(createdUserId, 'id criado').to.be.a('string').and.to.have.length.greaterThan(0);\ncy.apiRequest({\n  method: 'GET',\n  url: `/usuarios/${createdUserId}`\n}).then(response => {\n  expect(response.status).to.eq(200);\n  expect(response.body).to.have.property('email', createdEmail);\n});",
+                  "err": {},
+                  "uuid": "7cd91523-2e26-4910-aafe-204347b51660",
+                  "parentUUID": "ab49b9e4-9070-4f38-805a-6270096dd28d",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "deve atualizar usuário (PUT /usuarios/{id})",
+                  "fullTitle": "ServeRest - Autenticação e CRUD de Usuários CRUD de usuários autenticado deve atualizar usuário (PUT /usuarios/{id})",
+                  "timedOut": null,
+                  "duration": 209,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const newName = 'Usuário Teste Atualizado';\nconst token = Cypress.env('token');\ncy.apiRequest({\n  method: 'PUT',\n  url: `/usuarios/${createdUserId}`,\n  headers: {\n    authorization: token\n  },\n  body: {\n    nome: newName,\n    email: createdEmail,\n    password: '123456',\n    administrador: 'true'\n  }\n}).then(response => {\n  expect(response.status).to.eq(200);\n});",
+                  "err": {},
+                  "uuid": "858522ca-ea4a-4f75-9b9b-28d8ad4bf278",
+                  "parentUUID": "ab49b9e4-9070-4f38-805a-6270096dd28d",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "deve recusar criação com email duplicado (400)",
+                  "fullTitle": "ServeRest - Autenticação e CRUD de Usuários CRUD de usuários autenticado deve recusar criação com email duplicado (400)",
+                  "timedOut": null,
+                  "duration": 200,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const token = Cypress.env('token');\ncy.apiRequest({\n  method: 'POST',\n  url: '/usuarios',\n  headers: {\n    authorization: token\n  },\n  body: {\n    nome: 'Usuário Duplicado',\n    email: createdEmail,\n    password: '123456',\n    administrador: 'false'\n  }\n}).then(response => {\n  expect(response.status).to.be.oneOf([400, 409]);\n});",
+                  "err": {},
+                  "uuid": "75ddee95-da63-4a40-a2bc-5651f3987a87",
+                  "parentUUID": "ab49b9e4-9070-4f38-805a-6270096dd28d",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "deve excluir usuário (DELETE /usuarios/{id})",
+                  "fullTitle": "ServeRest - Autenticação e CRUD de Usuários CRUD de usuários autenticado deve excluir usuário (DELETE /usuarios/{id})",
+                  "timedOut": null,
+                  "duration": 206,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const token = Cypress.env('token');\ncy.apiRequest({\n  method: 'DELETE',\n  url: `/usuarios/${createdUserId}`,\n  headers: {\n    authorization: token\n  }\n}).then(response => {\n  expect(response.status).to.eq(200);\n});",
+                  "err": {},
+                  "uuid": "f38c0040-c4ac-4d2b-80c7-64e8e1971d6d",
+                  "parentUUID": "ab49b9e4-9070-4f38-805a-6270096dd28d",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "e4a809af-b25d-4c74-aadb-596c4dcd6895",
+                "7cd91523-2e26-4910-aafe-204347b51660",
+                "858522ca-ea4a-4f75-9b9b-28d8ad4bf278",
+                "75ddee95-da63-4a40-a2bc-5651f3987a87",
+                "f38c0040-c4ac-4d2b-80c7-64e8e1971d6d"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 1029,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            }
+          ],
+          "passes": [
+            "5d5e25a6-819d-4aee-a73d-cef9a7be2cd1",
+            "bd935a6c-0b05-4f03-be39-68a0d65e2b18"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 847,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
